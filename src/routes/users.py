@@ -51,7 +51,7 @@ def delete_user(user_id: int, db: Session=Depends(get_db)):
     return user
     
 @router.put("/{user_id}", response_model=UserResponse)
-def edit_user(user_id: int, user_new: UserUpdate db: Session=Depends(get_db)):
+def edit_user(user_id: int, user_new: UserUpdate, db: Session=Depends(get_db)):
     user = db.get(User, user_id)
     if not user:
         user_not_found(user_id)
