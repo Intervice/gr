@@ -6,7 +6,6 @@ from src.schemas import UserCreate, UserResponse, UserUpdate
 from src.database.models import User
 from src.database.db import get_db
 
-
 router = APIRouter(prefix="/users", tags=["users"])
 
 def user_not_found(user_id):
@@ -29,7 +28,7 @@ def get_users(user_id: int, db: Session=Depends(get_db)):
         user_not_found(user_id)
     return user
 
-@router.post("/{user_id}", response_model=UserResponse)
+@router.post("/", response_model=UserResponse)
 def create_user(user: UserCreate, db: Session=Depends(get_db)):
     try:
         new_user = User(**user.model_dump())

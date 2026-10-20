@@ -67,8 +67,8 @@ requirements.txt
 
 Завдання: Створити файл змінних середовища для налаштування підключення до бази даних.
 Деталі: Вказати рядок підключення, наприклад: DATABASE_URL=sqlite:///skills.db.
-main.py
 
+main.py
 Завдання: Головна точка входу в застосунок FastAPI.
 Деталі:
 Створити екземпляр app = FastAPI().
@@ -87,15 +87,14 @@ src/database/db.py
 Створити рушій бази даних через create_engine().
 Налаштувати фабрику сесій sessionmaker(autocommit=False, autoflush=False, bind=engine).
 Реалізувати генератор залежностей get_db(), який відкриває сесію (SessionLocal()) для кожного запиту та гарантовано закриває її у блоці finally.
+
 src/database/models.py
 Завдання: Опис SQLAlchemy моделей (таблиць бази даних) та зв'язків між ними.
-
 Деталі: Створити базовий клас Base = declarative_base() (або DeclarativeBase) та такі моделі:
 User:
 id (Integer, Primary Key)
 username (String, Unique, Index, не порожнє)
 email (String, Unique, Index, не порожнє)
-full_name (String, опціонально)
 bio (String / Text, опціонально)
 created_at (DateTime, автоматичний час створення)
 is_active (Boolean, за замовчуванням True)

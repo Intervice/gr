@@ -7,6 +7,8 @@ Base.metadata.create_all(bind=engine)
 
 from src.routes import skills
 from src.routes import users
+from src.routes import reviews
+from src.routes import exchanges
 
 app = FastAPI(title="SkillSwap API",
               description="Desc",
@@ -14,6 +16,8 @@ app = FastAPI(title="SkillSwap API",
 
 app.include_router(skills.router)
 app.include_router(users.router)
+app.include_router(reviews.router)
+app.include_router(exchanges.router)
 
 @app.get("/health")
 def read_root():

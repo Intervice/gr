@@ -2,7 +2,7 @@
 from sqlalchemy import select, Integer, String, create_engine, Boolean
 from sqlalchemy.orm import Mapped, mapped_column, DeclarativeBase, sessionmaker
 
-SQLALCHEMY_DATABASE_URL = "sqlite:///skills.db"
+SQLALCHEMY_DATABASE_URL = "sqlite:///skill_swap.db"
 
 engine = create_engine(
     SQLALCHEMY_DATABASE_URL, connect_args={"check_same_thread": False}
