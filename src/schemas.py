@@ -42,9 +42,9 @@ class SkillUpdate(BaseModel):
     
     @model_validator(mode="after")
     def check_teach_learn_fields(self):
-        if self.can_teach is not None and self.want_learn is not None:
-            if self.can_teach == self.want_learn:
-                raise ValueError("You can't be teacher and student in a single skill or neither.")
+        # if self.can_teach is not None and self.want_learn is not None:
+        if self.can_teach == self.want_learn == True:
+            raise ValueError("You can't be teacher and student in a single skill or neither.")
         return self
 
 class SkillResponse(SkillBase):

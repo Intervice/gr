@@ -14,7 +14,7 @@ def user_not_found(user_id):
     
 @router.get("/health")
 def test():
-    return {"message": "test words | prefix: /users"}
+    return {"message": "test works | prefix: /users"}
 
 @router.get("/", response_model=List[UserResponse])
 def get_users(db: Session=Depends(get_db)):
@@ -60,33 +60,3 @@ def edit_user(user_id: int, user_new: UserUpdate, db: Session=Depends(get_db)):
     db.commit()
     db.refresh(user)
     return user
-
-"""
-src/routes/users.py
-Завдання: Реалізувати ендпоінти для управління користувачами з прямими запитами до БД усередині функцій.
-Деталі:
-GET /users/ — отримати список користувачів з пагінацією (skip, limit).
-GET /users/{user_id} — отримати профіль конкретного користувача за ID (з обробкою 404 помилки).
-POST /users/ — зареєструвати нового користувача з перевіркою на унікальність email та username.
-PUT /users/{user_id} — оновити дані профілю користувача.
-GET /users/{user_id}/skills — отримати список усіх навичок, якими володіє або цікавиться конкретний користувач.
-
-src/schemas.py
-Завдання: Описати Pydantic-моделі для валідації вхідних даних (Create, Update) та серіалізації відповідений (Response).
-Деталі:
-User: UserBase, UserCreate, UserUpdate, UserResponse.
-
-src/database/models.py
-Деталі: Створити базовий клас Base = declarative_base() (або DeclarativeBase) та такі моделі:
-User:
-id (Integer, Primary Key)
-username (String, Unique, Index, не порожнє)
-email (String, Unique, Index, не порожнє)
-bio (String / Text, опціонально)
-created_at (DateTime, автоматичний час створення)
-is_active (Boolean, за замовчуванням True)
-Зв'язок «багато-до-багато» з навичками (skills).
-"""
-# Зробити через ШІ
-# 1. Доробити решта файлів (exchanges.py, reviews.py)
-# 2. Зробити автоматичне тестування (код, який робить запити до вашого API)

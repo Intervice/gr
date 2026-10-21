@@ -16,6 +16,11 @@ router = APIRouter(prefix="/skills", tags=["skills"])
 def skill_not_found(skill_id):
     raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
         detail=f"There is no skill by id {skill_id}")
+    
+def wrong_skill_status():
+    raise HTTPException(
+        status_code=status.HTTP_422_UNPROCESSABLE_CONTENT,
+        detail="You can't be teacher and student in a single skill")
 
 @router.get("/health")
 def test():
@@ -33,16 +38,17 @@ def get_skill(skill_id: int, db: Session=Depends(get_db)):
         skill_not_found(skill_id)
     return skill
 
-@router.delete("/{skill_id}", response_model=SkillResponse)
+@router.delete("/{skill_id}", status_code=status.HTTP_204_NO_CONTENT)
 def delete_skill(skill_id: int, db: Session=Depends(get_db)):
     skill = db.get(Skill, skill_id)
     if not skill:
         skill_not_found(skill_id)
     db.delete(skill)
     db.commit()
-    return skill
+    return
 
-@router.post("/", response_model=SkillResponse)
+@router.post("/", response_model=SkillResponse,
+             status_code=status.HTTP_201_CREATED)
 def create_skill(skill: SkillCreate, db: Session=Depends(get_db)):
     new_skill = Skill(**skill.model_dump())
     db.add(new_skill)
@@ -57,6 +63,16 @@ def update_skill(skill_id: int, skill: SkillUpdate, db: Session=Depends(get_db))
         skill_not_found(skill_id)
     
     skill_update = skill.model_dump(exclude_unset=True)
+    if "can_teach" in skill_update and "want_learn" in skill_update:
+        if skill_update["can_teach"] == skill_update["want_learn"] == True:
+            wrong_skill_status()
+    elif "can_teach" in skill_update:
+        if skill_update["can_teach"] and old_skill.want_learn:
+            wrong_skill_status()
+    elif "want_learn" in skill_update:
+        if skill_update["want_learn"] and old_skill.can_teach:
+            wrong_skill_status()
+        
     for key, value in skill_update.items():
         setattr(old_skill, key, value)
     db.commit()
