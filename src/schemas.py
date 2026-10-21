@@ -57,7 +57,7 @@ class SkillResponse(SkillBase):
     model_config = ConfigDict(from_attributes=True)
 
 class UserBase(BaseModel):
-    username: str = Field(..., max_length=100)
+    username: str = Field(..., min_length=1, max_length=100)
     email: EmailStr
     bio: str | None = Field(None, max_length=1000)
     is_active: bool = True

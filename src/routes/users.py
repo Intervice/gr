@@ -28,7 +28,7 @@ def get_users(user_id: int, db: Session=Depends(get_db)):
         user_not_found(user_id)
     return user
 
-@router.post("/", response_model=UserResponse)
+@router.post("/", response_model=UserResponse, status_code=status.HTTP_201_CREATED)
 def create_user(user: UserCreate, db: Session=Depends(get_db)):
     try:
         new_user = User(**user.model_dump())
@@ -40,15 +40,15 @@ def create_user(user: UserCreate, db: Session=Depends(get_db)):
     db.refresh(new_user)
     return new_user
 
-@router.delete("/{user_id}", response_model=UserResponse)
+@router.delete("/{user_id}", status_code=status.HTTP_204_NO_CONTENT)
 def delete_user(user_id: int, db: Session=Depends(get_db)):
     user = db.get(User, user_id)
     if not user:
         user_not_found(user_id)
     db.delete(user)
     db.commit()
-    return user
-    
+    return
+
 @router.put("/{user_id}", response_model=UserResponse)
 def edit_user(user_id: int, user_new: UserUpdate, db: Session=Depends(get_db)):
     user = db.get(User, user_id)
